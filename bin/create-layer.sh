@@ -10,10 +10,13 @@ function error_exit() {
 PYTHON_VERSION="python3.7"
 
 # Ensure required bins were installed
+echo "create-layer: running requirements check"
 command -v zip > /dev/null 2>&1 || (echo "zip not available"; exit 1)
 command -v pip3 > /dev/null 2>&1 || (echo "pip3 not available"; exit 1)
 
 PROJECT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )"/.. >/dev/null 2>&1 && pwd )
+echo "create-layer: running against $PROJECT_DIR"
+
 mapfile -t directories < <(find "$PROJECT_DIR" -name 'requirements.layer.txt' -exec dirname {} \; | sort -u | grep -v "\.terraform\b\|\.terragrunt-cache\b")
 
 for dir in "${directories[@]}"
